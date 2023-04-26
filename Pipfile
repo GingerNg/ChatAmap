@@ -1,14 +1,28 @@
 [[source]]
-url = "https://pypi.python.org/simple"
+url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
 [packages]
-ipykernel = "*"
-langchain = "*"
-fastapi = "*"
-uvicorn = "*"
-gradio = "*"
+openai = "*"
+pytest = "*"
+flask-sqlalchemy = "*"
+docx2txt = "*"
+python-telegram-bot = "*"
+sqlite-web = "*"
+apscheduler = "==3.10.1"
+tweepy = "*"
+feedparser = "*"
+moviepy = "*"
+pyttsx3 = "*"
+pyyaml = "*"
+tiktoken = "*"
+edge-tts = "*"
+pyexecjs = "*"
+httpx = "*"
+translators = "*"
+langid = "*"
+flask = "*"
 
 [dev-packages]
 ipykernel = "*"
