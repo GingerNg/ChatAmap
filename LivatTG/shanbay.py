@@ -6,8 +6,9 @@ from common.models.dao import FsaDao
 from common.models.msgs import ShanbayMsg
 import telegram
 import asyncio
-from utils.env_utils import init_custom_env
-init_custom_env(flag="prod")
+BotNanme = "TranslatorBot"
+from utils.env_utils import init_custom_env, root_dir
+init_custom_env(flag="prod", botname=BotNanme)
 
 from utils.logger_utils import get_logger
 logger = get_logger()
@@ -19,6 +20,7 @@ fsa_dao = FsaDao(db=db, app=app)
 
 import execjs
 
+# https://twitter.com/yihong0618/status/1649433890032082944
 # 解密 https://github.com/yihong0618/shanbay_remember/blob/main/shanbay.js
 js_code = '''
 class Func {
@@ -369,16 +371,7 @@ def get_story(words):
     logger.debug(f"openai output: {res}")
     return res
 
-import subprocess
-def story_tts(story, article_name='review'):
-    """
-    调用edge-tts生成mp3
-    """
-    process = subprocess.Popen(['edge-tts', '--text', story, '--write-media', f"{article_name}_article.mp3"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    stdout, stderr = process.communicate()
-    logger.debug(f'stdout: {stdout.decode()}')
-    logger.debug(f'stderr: {stderr.decode()}')
-    logger.debug(f'exit code: {process.returncode}')
+from utils.trans_text_audio import edge_tts
 
 async def pipeline():
     try:
@@ -392,9 +385,10 @@ async def pipeline():
             await bot.send_message(text=story, chat_id=chat_id, parse_mode="Markdown")
         fsa_dao.save_obj(ShanbayMsg(words=words, story= story))
         article_name="review"
-        story_tts(story=story, article_name=article_name)
+        voice_pth = f"{root_dir}/data/{article_name}_article.mp3"
+        edge_tts(text=story, voice_pth=voice_pth)
         async with bot:
-            with open(f"{article_name}_article.mp3", 'rb') as audio:
+            with open(voice_pth, 'rb') as audio:
                 await bot.send_voice(chat_id=chat_id, voice=audio)
     except Exception as e:
         logger.error(e)

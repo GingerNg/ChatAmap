@@ -1,0 +1,10 @@
+.venv/*
+*.pyc
+*.mp3
+instance/*
+*/node_modules/*
+conf/*
+*/nohup.out
+docs/*
+logs/*
+data/*
