@@ -23,7 +23,7 @@ class FsaDao(Dao):
         with self.app.app_context():
             self.db.create_all()
 
-from .msgs import RssMsg
+from .msgs import RssMsg, TranslatorBotMsg
 class RssMsgDao(FsaDao):
     def __init__(self, db, app) -> None:
         super().__init__(db, app)
@@ -41,3 +41,13 @@ class RssMsgDao(FsaDao):
             return True
         else:
             return False
+
+
+class TranslatorBotMsgDao(FsaDao):
+    def __init__(self, db, app) -> None:
+        super().__init__(db, app)
+
+    def fetch(self, limit=1):
+        with self.app.app_context():
+            item = TranslatorBotMsg.query.order_by(TranslatorBotMsg.id.desc()).limit(limit).all()
+        return item

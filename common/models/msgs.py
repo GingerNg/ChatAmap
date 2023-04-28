@@ -29,6 +29,10 @@ class ShanbayMsg(db.Model):
 
 # *****************************************************
 class TranslatorBotMsg(db.Model):
+    content: str
+    role: str
+    role_type: str
+
     id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
     create_time = db.Column(db.DateTime,
                            default=datetime.datetime.now, nullable=False)
