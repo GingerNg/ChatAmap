@@ -2,14 +2,14 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.getcwd()))
 print(os.path.dirname(os.getcwd()))
-from common.models.dao import FsaDao
-from common.models.msgs import ShanbayMsg
-import telegram
-import asyncio
 BotNanme = "TranslatorBot"
 from utils.env_utils import init_custom_env, root_dir
 init_custom_env(flag="prod", botname=BotNanme)
 
+from common.models.dao import FsaDao
+from common.models.msgs import ShanbayMsg
+import telegram
+import asyncio
 from utils.logger_utils import get_logger
 logger = get_logger()
 
@@ -297,11 +297,7 @@ function shanbay_decode(str) {
 }
 '''
 
-import base64
 import requests
-
-# def decode(data):
-#     return base64.b64decode(data).decode()
 
 root_url = 'https://apiv3.shanbay.com'
 from utils.env_utils import shanbay_cookie
@@ -317,7 +313,7 @@ def get_materialbookid():
         f"{root_url}{current_pth}",
         cookies={'cookie': shanbay_cookie}
         )
-    # print(resp.json())
+    logger.debug(resp.json())
     return resp.json()["data"]
 
 def get_data(materialbookId="rkvzi", page=1, typeof="NEW"):
@@ -329,6 +325,7 @@ def get_data(materialbookId="rkvzi", page=1, typeof="NEW"):
         f"{root_url}{pth}",
         cookies={'cookie': shanbay_cookie}
         )
+    logger.debug(resp.json())
     return resp.json()["data"]
 
 ctx = execjs.compile(js_code)
