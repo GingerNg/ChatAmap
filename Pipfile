@@ -23,6 +23,12 @@ httpx = "*"
 translators = "*"
 langid = "*"
 flask = "*"
+pydantic = "*"
+gradio = "*"
+sse-starlette = "*"
+pynng = "*"
+curio = "*"
+poe-api = "*"
 
 [dev-packages]
 ipykernel = "*"
