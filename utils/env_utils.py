@@ -8,6 +8,9 @@ from utils.logger_utils import init_logger
 env_conf = None
 default_env_conf = None
 
+# db
+db_url = None
+
 # notion
 notion_token = None
 notion_db_id = None
@@ -58,7 +61,7 @@ def init_custom_env(flag="prod", botname="LivatBot"):
         pth = f'{root_dir}/conf/env.dev.yaml'
     else:
         pth = f'{root_dir}/conf/env.yaml'
-    global env_conf, channel_chat_id, group_chat_id, notion_token, notion_db_id, chat_id, tg_token
+    global env_conf, channel_chat_id, group_chat_id, notion_token, notion_db_id, chat_id, tg_token, db_url
     if env_conf is None:
         with open(pth, 'r') as file:
             env_conf = yaml.safe_load(file)
@@ -70,6 +73,8 @@ def init_custom_env(flag="prod", botname="LivatBot"):
 
             channel_chat_id = env_conf["tg"]["chatId"]["channelId"]["testChannel"]
             group_chat_id = env_conf["tg"]["chatId"]["groupId"]["testGroup"]
+            # db_type = env_conf["db"]["type"]
+            db_url = env_conf["db"]["url"] = f"sqlite:///{botname}.sqlite3"
 
 
 

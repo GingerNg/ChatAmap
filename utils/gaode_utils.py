@@ -1,12 +1,15 @@
 import requests
-from . import env
-from .logger_utils import logging
 
-key = env.gaode_key
-
+from utils.env_utils import gaode_key
+key = gaode_key
 class GaoDe(object):
     def __init__(self) -> None:
         """
+        https://restapi.amap.com/v5/direction/driving?parameters
+        https://restapi.amap.com/v5/direction/walking?parameters
+        https://restapi.amap.com/v5/direction/bicycling?parameters
+        https://restapi.amap.com/v5/direction/electrobike?parameters
+        https://restapi.amap.com/v5/direction/transit/integrated
         """
         pass
 
@@ -23,27 +26,12 @@ class GaoDe(object):
         response = requests.get(url, params=params)
         result = response.json()
         # print(result)
-        routes = []
-        for seg in result['route']['transits'][0]['segments']:
-            for k,v in seg.items():
-                # print(k,v)
-                if k == "walking":
-                    line = f"步行, {v['distance']}米"
-                    routes.append(line)
-                    logging.debug(line)
-                elif k == "bus":
-                    line = f"公交, {v['buslines'][0]['name']},{v['buslines'][0]['departure_stop']['name']}上车, {v['buslines'][0]['arrival_stop']['name']}下车"
-                    routes.append(line)
-                    logging.debug(line)
-        logging.debug("---------------")
-        return routes
-                # print(k, v)
+        for step in result['route']['transits'][0]['segments']:
+            print(step)
 
     @staticmethod
     def geocode(address, city=None):
-        address = address.strip('\'')
-        if city: city = city.strip('\'')
-        logging.debug(f"geocode input: {address}, {city}")
+        print(f"geocode input: {address}")
         """
         address --> location(Lat Lng)
         [{'formatted_address': 'XXXXXX',
@@ -61,7 +49,6 @@ class GaoDe(object):
         'location': '121.457689,31.275837',
         'level': '兴趣点'}]
         """
-
         url = 'https://restapi.amap.com/v3/geocode/geo'
         params = {
             'key': key,
@@ -70,7 +57,7 @@ class GaoDe(object):
         if city is not None: params["city"] = city
         response = requests.get(url, params=params)
         result = response.json()
-        logging.debug(result)
+        print(result)
         return result['geocodes'][0]['location']
 
 

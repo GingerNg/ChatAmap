@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 app = None
 db = None
 
-def init_db_app(db_url='sqlite:///livat_test.sqlite3', secret_key= "random string"):
+def init_db_app(db_url, secret_key= "random string"):
     global app, db
     if app is None and db is None:
         app = Flask(__name__)
